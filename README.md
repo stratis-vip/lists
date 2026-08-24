@@ -14,7 +14,7 @@ You need to clone this repo to a position that common lisp recognize (usually to
 After that
 ## Functions
 
-### if-any
+### memberp
 
 ```lisp
 (defun memberp (item lst &key (test #'eql))
@@ -27,6 +27,8 @@ After that
    Returns T if item is in the LST. Else NIL or TYPE-ERROR if no list or no-function given."
 ...)
 ```
+
+### cartesian-power
 
 ```lisp 
 (defun cartesian-power (lst n)
@@ -45,8 +47,10 @@ Examples:
 Signals an error if LST is not a list or N is not a non-negative integer."
    ...)
  ```
- 
- ```lisp
+
+### cartesian-product
+
+```lisp
  (defun cartesian-product (&rest lsts)
   "Return the Cartesian product of LSTS.
 
@@ -66,6 +70,8 @@ Examples:
       (2 A X) (2 A Y) (2 B X) (2 B Y))"
   ...)
  ```
+
+### permutations-without-replacement
 
 ```lisp
 (defun permutations-without-replacement (lst n &key (test #'eql))
