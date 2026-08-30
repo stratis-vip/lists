@@ -7,6 +7,7 @@
  (:use :cl)
  (:export
   :memberp
+  :has-no-duplicates-p
   :cartesian-power
   :cartesian-product
   :permutations-without-replacement
