@@ -1,7 +1,7 @@
 (defsystem :lists  
   :description "Lists utilities for general use"
   :author "Stratis Christodoulou <stratis.vip@gmail.com"
-  :version 1.0
+  :version "1.0"
   
   :depends-on ()
   :pathname "src"
