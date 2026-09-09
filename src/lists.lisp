@@ -116,4 +116,113 @@ Examples:
                          (1- n)
                          :test test)))
               lst)))
+
+(defun power-set (set)
+  "Returns all subsets of LIST SET."
+  (labels ((ps (remaining acc)
+             (if (null remaining)
+                 acc
+                 (ps (cdr remaining)
+                     (append acc
+			     (mapcar (lambda (subset)
+                                       (cons (car remaining) subset))
+                                     acc))))))
+    (ps set '(()))))
+
+(defun has-more-than-n-p (list n &key (equal nil))
+  "Returns T if LIST Length > n. if EQUAL set to T then 
+N     any positive integer
+LIST  any list
+EQUAL check if N = lenght LIST
+
+This function stops immidiately when it counts n+1 items, so it doesn't
+traverse the wjole list.
+
+In case of invalid input, returns nil immidiately"
+  (if (and (listp list) (integerp n) (plusp n))
+      (loop for item in list
+	    for i from 1 to (1+ n)
+	    finally (return (if equal
+				(and (= i n) (= (length list) n))
+				(> i n))))
+      nil))
+
+(defun combine-any-predicates  (&rest list-of-functions)
+  "Return a predicate that succeeds when any predicate succeeds.
+
+LIST-OF-FUNCTIONS is a list of predicate functions.  The returned
+predicate accepts one argument X and returns a true value when at least
+one of the predicates in LIST-OF-FUNCTIONS returns a true value for X.
+
+This is equivalent to a logical OR of the supplied predicates.
+
+Examples:
+
+  (funcall (combine-any-predicates #'evenp #'oddp) 3)
+  => T
+
+  (funcall (combine-any-predicates #'evenp #'zerop) 3)
+  => NIL"
+  (lambda (x)
+    (some (lambda (fn) (funcall fn x))
+	  list-of-functions)))
+
+(defun combine-all-predicates  (&rest list-of-functions)
+  "Return a predicate that succeeds when all predicates succeed.
+
+LIST-OF-FUNCTIONS is a list of predicate functions.  The returned
+predicate accepts one argument X and returns a true value only when
+every predicate in LIST-OF-FUNCTIONS returns a true value for X.
+
+This is equivalent to a logical AND of the supplied predicates.
+
+Examples:
+
+  (funcall (combine-all-predicates #'integerp #'evenp) 4)
+  => T
+
+  (funcall (combine-all-predicates #'integerp #'evenp) 3)
+  => NIL"
+  (lambda (x)
+    (every (lambda (fn) (funcall fn x))
+	  list-of-functions)))
+
+(defun is-list-of-p (list combiner &rest predicates)
+    "Return true when every element of LIST satisfies the combined predicates.
+
+COMBINER is a function that accepts the predicates in PREDICATES and
+returns a single predicate.  The resulting predicate is then applied
+to every element of LIST.
+
+PREDICATES must therefore be functions accepting one argument and
+returning a generalized boolean.
+
+For example, using COMBINE-ANY-PREDICATES requires every element of LIST
+to satisfy at least one of the supplied predicates:
+
+  (is-list-of-p '(1 2 3 4)
+                #'combine-any-predicates
+                #'evenp
+                #'oddp)
+  => T
+
+Using COMBINE-ALL-PREDICATES requires every element of LIST to satisfy
+all of the supplied predicates:
+
+  (is-list-of-p '(2 4 6)
+                #'combine-all-predicates
+                #'integerp
+                #'evenp)
+  => T
+
+  (is-list-of-p '(2 4 7)
+                #'combine-all-predicates
+                #'integerp
+                #'evenp)
+  => NIL"
+  (let ((predicate (apply combiner predicates)))
+    (every predicate list)))
+
+
+
 ;;; LISTS:src/lists.lisp ends here

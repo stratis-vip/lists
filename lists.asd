@@ -15,7 +15,7 @@
 (defsystem :lists/tests 
   :description "Test suite for lists"
 
-  :depends-on (:review)
+  :depends-on ("lists" "review")
   
   :pathname "tests"
   :serial t
