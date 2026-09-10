@@ -11,9 +11,17 @@ Utilities about lists manipulation. Making my life easier.
 ## Installation
 
 You need to clone this repo to a position that common lisp recognize (usually to ~/common-lisp/).
-After that
-## Functions
+This package depends on: 
 
+* [review for testing](https://github.com/stratis-vip/review)
+
+After that you can load package with 
+```lisp 
+(asdf:load-system :math-parser)
+(asdf:load-system :math-parser/tests)
+```
+
+## Functions
 
 ### cartesian-power
 
